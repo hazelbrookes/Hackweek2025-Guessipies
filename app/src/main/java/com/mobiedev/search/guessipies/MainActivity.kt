@@ -11,6 +11,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
@@ -19,6 +20,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.mobiedev.search.guessipies.ui.screens.GameScreen
 import com.mobiedev.search.guessipies.ui.screens.HomeScreen
+import com.mobiedev.search.guessipies.ui.screens.HowToScreen
+import com.mobiedev.search.guessipies.ui.screens.ScoresScreen
 import com.mobiedev.search.guessipies.ui.theme.GuessipiesTheme
 import kotlinx.serialization.Serializable
 
@@ -65,11 +68,23 @@ fun GuessipiesAppNavigation(
     ) {
         composable<Home> {
             HomeScreen(
-                onNavigateToGame= { navController.navigate(route = Game) }
+                onNavigateToGame = { navController.navigate(route = Game) },
+                onNavigateToHowto = { navController.navigate(route = Howto) },
+                onNavigateToScores = { navController.navigate(route = Scores) },
             )
         }
         composable<Game> {
             GameScreen(
+                onNavigateToHome= { navController.navigate(route = Home) }
+            )
+        }
+        composable<Howto> {
+            HowToScreen(
+                onNavigateToHome= { navController.navigate(route = Home) }
+            )
+        }
+        composable<Scores> {
+            ScoresScreen(
                 onNavigateToHome= { navController.navigate(route = Home) }
             )
         }
