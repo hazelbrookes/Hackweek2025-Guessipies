@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,6 +17,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.mobiedev.search.guessipies.ui.screens.GameScreen
+import com.mobiedev.search.guessipies.ui.screens.HomeScreen
 import com.mobiedev.search.guessipies.ui.theme.GuessipiesTheme
 import kotlinx.serialization.Serializable
 
@@ -65,24 +68,10 @@ fun GuessipiesAppNavigation(
                 onNavigateToGame= { navController.navigate(route = Game) }
             )
         }
-    }
-}
-
-
-@Composable
-fun HomeScreen(
-    onNavigateToGame: () -> Unit
-){
-    Column {
-        Text("Home Screen")
-    }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    GuessipiesTheme {
-
+        composable<Game> {
+            GameScreen(
+                onNavigateToHome= { navController.navigate(route = Home) }
+            )
+        }
     }
 }
