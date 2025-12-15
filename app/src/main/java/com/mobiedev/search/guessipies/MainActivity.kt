@@ -7,10 +7,24 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,23 +46,93 @@ object Home
 object Howto
 
 @Serializable
-object Game
-
-@Serializable
-object Result
+object Results
 
 @Serializable
 object Scores
+
+@Serializable
+object Game
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val navController = rememberNavController()
+
             GuessipiesTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    bottomBar = {
+                        NavigationBar(windowInsets = NavigationBarDefaults.windowInsets) {
+                            NavigationBarItem(
+                                selected = false,
+                                onClick = {
+                                    navController.navigate(Home)
+                                },
+                                icon = {
+                                    Icon(
+                                        Icons.Default.Home,
+                                        "Home Icon"
+                                    )
+                                },
+                                label = {
+                                    Text("Home")
+                                }
+                            )
+                            NavigationBarItem(
+                                selected = false,
+                                onClick = {
+                                    navController.navigate(Game)
+                                },
+                                icon = {
+                                    Icon(
+                                        Icons.Default.PlayArrow,
+                                        "Game Icon"
+                                    )
+                                },
+                                label = {
+                                    Text("Play")
+                                }
+                            )
+                            NavigationBarItem(
+                                selected = false,
+                                onClick = {
+                                    navController.navigate(Howto)
+                                },
+                                icon = {
+                                    Icon(
+                                        Icons.Default.Info,
+                                        "Game Information Icon"
+                                    )
+                                },
+                                label = {
+                                    Text("Rules")
+                                }
+                            )
+                            NavigationBarItem(
+                                selected = false,
+                                onClick = {
+                                    navController.navigate(Scores)
+                                },
+                                icon = {
+                                    Icon(
+                                        Icons.Default.AccountCircle,
+                                        "Scores Icon"
+                                    )
+                                },
+                                label = {
+                                    Text("Scores")
+                                }
+                            )
+                        }
+                    }
+                ) { innerPadding ->
                     GuessipiesAppNavigation(
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier.padding(innerPadding),
+                        navController = navController
                     )
                 }
             }
@@ -59,7 +143,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GuessipiesAppNavigation(
     modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController(),
+    navController: NavHostController,
 ) {
     NavHost(
         modifier = modifier,
@@ -79,9 +163,7 @@ fun GuessipiesAppNavigation(
             )
         }
         composable<Howto> {
-            HowToScreen(
-                onNavigateToHome= { navController.navigate(route = Home) }
-            )
+            HowToScreen()
         }
         composable<Scores> {
             ScoresScreen(

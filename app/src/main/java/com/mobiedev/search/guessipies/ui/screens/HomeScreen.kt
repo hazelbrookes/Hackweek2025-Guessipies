@@ -40,12 +40,6 @@ fun HomeScreen(
         ) {
             Text("Play")
         }
-        Button({ onNavigateToHowto() }) {
-            Text("Rules")
-        }
-        Button({ onNavigateToScores() }) {
-            Text("Scores")
-        }
         Button({  }) {
             Text("Feedback")
         }
