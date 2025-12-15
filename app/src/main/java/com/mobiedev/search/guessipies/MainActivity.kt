@@ -152,9 +152,7 @@ fun GuessipiesAppNavigation(
     ) {
         composable<Home> {
             HomeScreen(
-                onNavigateToGame = { navController.navigate(route = Game) },
-                onNavigateToHowto = { navController.navigate(route = Howto) },
-                onNavigateToScores = { navController.navigate(route = Scores) },
+                onNavigateToGame = { navController.navigate(route = Game) }
             )
         }
         composable<Game> {

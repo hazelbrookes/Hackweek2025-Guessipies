@@ -20,9 +20,7 @@ import com.mobiedev.search.guessipies.ui.theme.GuessipiesTheme
 
 @Composable
 fun HomeScreen(
-    onNavigateToGame: () -> Unit,
-    onNavigateToHowto: () -> Unit,
-    onNavigateToScores: () -> Unit
+    onNavigateToGame: () -> Unit
 ){
     Column(
         modifier = Modifier
@@ -51,9 +49,7 @@ fun HomeScreen(
 fun HomePreview() {
     GuessipiesTheme {
         HomeScreen(
-            onNavigateToGame = {},
-            onNavigateToHowto = {},
-            onNavigateToScores = {}
+            onNavigateToGame = {}
         )
     }
 }
