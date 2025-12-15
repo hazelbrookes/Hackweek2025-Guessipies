@@ -31,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.mobiedev.search.guessipies.ui.screens.GameScreen
 import com.mobiedev.search.guessipies.ui.screens.HomeScreen
@@ -61,6 +62,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentRoute = navBackStackEntry?.destination?.route
 
             GuessipiesTheme {
                 Scaffold(
@@ -68,64 +71,28 @@ class MainActivity : ComponentActivity() {
                     bottomBar = {
                         NavigationBar(windowInsets = NavigationBarDefaults.windowInsets) {
                             NavigationBarItem(
-                                selected = false,
-                                onClick = {
-                                    navController.navigate(Home)
-                                },
-                                icon = {
-                                    Icon(
-                                        Icons.Default.Home,
-                                        "Home Icon"
-                                    )
-                                },
-                                label = {
-                                    Text("Home")
-                                }
+                                selected = currentRoute == Home::class.qualifiedName,
+                                onClick = { navController.navigate(Home) },
+                                icon = { Icon(Icons.Default.Home, "Home Icon") },
+                                label = { Text("Home") }
                             )
                             NavigationBarItem(
-                                selected = false,
-                                onClick = {
-                                    navController.navigate(Game)
-                                },
-                                icon = {
-                                    Icon(
-                                        Icons.Default.PlayArrow,
-                                        "Game Icon"
-                                    )
-                                },
-                                label = {
-                                    Text("Play")
-                                }
+                                selected = currentRoute == Game::class.qualifiedName,
+                                onClick = { navController.navigate(Game) },
+                                icon = { Icon(Icons.Default.PlayArrow, "Game Icon") },
+                                label = { Text("Play") }
                             )
                             NavigationBarItem(
-                                selected = false,
-                                onClick = {
-                                    navController.navigate(Howto)
-                                },
-                                icon = {
-                                    Icon(
-                                        Icons.Default.Info,
-                                        "Game Information Icon"
-                                    )
-                                },
-                                label = {
-                                    Text("Rules")
-                                }
+                                selected = currentRoute == Howto::class.qualifiedName,
+                                onClick = { navController.navigate(Howto) },
+                                icon = { Icon(Icons.Default.Info, "Game Information Icon") },
+                                label = { Text("Rules") }
                             )
                             NavigationBarItem(
-                                selected = false,
-                                onClick = {
-                                    navController.navigate(Scores)
-                                },
-                                icon = {
-                                    Icon(
-                                        Icons.Default.AccountCircle,
-                                        "Scores Icon"
-                                    )
-                                },
-                                label = {
-                                    Text("Scores")
-                                }
+                                selected = currentRoute == Scores::class.qualifiedName,
+                                onClick = { navController.navigate(Scores) },
+                                icon = { Icon(Icons.Default.AccountCircle, "Scores Icon") },
+                                label = { Text("Scores") }
                             )
                         }
                     }
