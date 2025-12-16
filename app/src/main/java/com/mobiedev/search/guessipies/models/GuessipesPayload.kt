@@ -33,7 +33,7 @@ data class IngredientStage(
 
 @Serializable
 data class Section(
-    @SerialName("ingredients") val ingredients: List<Ingredient>
+    @SerialName("ingredients") val ingredients: List<Ingredient?>
 )
 
 @Serializable

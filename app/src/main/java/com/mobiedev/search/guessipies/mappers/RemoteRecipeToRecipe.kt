@@ -8,8 +8,8 @@ fun RemoteRecipe.toRecipe(): Recipe = Recipe(
     title = this.title,
     ingredients = this.instructions.stages.flatMap { stage ->
         stage.sections.flatMap { section ->
-            section.ingredients.map { ingredient ->
-                ingredient.name
+            section.ingredients.mapNotNull { ingredient ->
+                ingredient?.name
             }
         }
     }
