@@ -1,7 +1,6 @@
 package com.mobiedev.search.guessipies.ui.screens
 
 import android.annotation.SuppressLint
-import android.text.Layout
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mobiedev.search.guessipies.models.Chain
+import com.mobiedev.search.guessipies.models.Link
 import com.mobiedev.search.guessipies.ui.theme.GuessipiesTheme
 import com.mobiedev.search.guessipies.viewmodel.GameUiState
 import com.mobiedev.search.guessipies.viewmodel.GameViewModel
@@ -40,18 +40,27 @@ fun GameScreen(viewModel: GameViewModel){
             chain = uiState.value.chain,
             modifier = Modifier
                 .fillMaxWidth()
+                .weight(1f)
         )
-        CurrentRecipe(uiState.value)
-        PossibleAnswersGrid(uiState.value)
+        CurrentRecipe(
+            uiState = uiState.value
+        )
+        PossibleAnswersGrid(
+            uiState = uiState.value,
+            modifier = Modifier
+                .weight(1f)
+        )
     }
 }
 
 @Composable
 fun PossibleAnswersGrid(
-    uiState: GameUiState
+    uiState: GameUiState,
+    modifier: Modifier = Modifier
 ){
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2)
+        columns = GridCells.Fixed(2),
+        modifier = modifier
     ) {
         uiState.possibleAnswers.forEach { recipe ->
             item {
@@ -79,9 +88,7 @@ fun PossibleAnswersGrid(
 }
 
 @Composable
-fun CurrentRecipe(
-    uiState: GameUiState
-) {
+fun CurrentRecipe(uiState: GameUiState) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -109,10 +116,41 @@ fun CurrentRecipe(
 }
 
 @Composable
+fun Link(link: Link) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 60.dp, vertical = 10.dp)
+    ) {
+        Text(
+            text = link.recipe1.title,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
+        HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp))
+        Text(
+            text = link.ingredient,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
+        HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp))
+        Text(
+            text = link.recipe2.title,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
+    }
+}
+
+@Composable
 private fun CurrentChain(chain: Chain, modifier: Modifier = Modifier) {
-    LazyColumn(modifier = modifier) {
-        itemsIndexed(chain.chain) { index, link ->
-            Text(link.recipe1.title)
+    LazyColumn(
+        modifier = modifier,
+        reverseLayout = true
+    ) {
+        itemsIndexed(chain.chain.reversed()) { index, link ->
+            Link(link)
         }
     }
 }

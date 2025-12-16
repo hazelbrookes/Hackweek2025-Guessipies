@@ -34,9 +34,9 @@ private val stubChain = Chain(
                 title = "Recipe 1",
                 ingredients = listOf("R1 & R2 matcher", "xyz")
             ),
-            ingredient = "one thing",
+            ingredient = "R1 & R2 matcher",
             recipe2 = Recipe(
-                title = "Recpipe 2",
+                title = "Recipe 2",
                 ingredients = listOf("R1 & R2 matcher", "R2 & R3 matcher", "abc")
             )
         ),
@@ -45,10 +45,32 @@ private val stubChain = Chain(
                 title = "Recipe 2",
                 ingredients = listOf("R1 & R2 matcher", "R2 & R3 matcher", "123")
             ),
-            ingredient = "another",
+            ingredient = "R2 & R3 matcher",
             recipe2 = Recipe(
-                title = "Recpipe 3",
-                ingredients = listOf("R2 & R3 matcher", "cheese")
+                title = "Recipe 3",
+                ingredients = listOf("R2 & R3 matcher", "R3 & R4 matcher")
+            )
+        ),
+        Link(
+            recipe1 = Recipe(
+                title = "Recipe 3",
+                ingredients = listOf("R2 & R3 matcher", "R3 & R4 matcher")
+            ),
+            ingredient = "R3 & R4 matcher",
+            recipe2 = Recipe(
+                title = "Recipe 4",
+                ingredients = listOf("R3 & R4 matcher", "R4 & R5 matcher")
+            )
+        ),
+        Link(
+            recipe1 = Recipe(
+                title = "Recipe 4",
+                ingredients = listOf("R4 & R5 matcher", "cheese")
+            ),
+            ingredient = "R4 & R5 matcher",
+            recipe2 = Recipe(
+                title = "Recipe 5",
+                ingredients = listOf("R4 & R5 matcher", "beans")
             )
         )
     ),
