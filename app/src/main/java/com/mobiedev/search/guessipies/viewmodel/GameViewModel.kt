@@ -17,9 +17,10 @@ data class GameUiState(
 class GameViewModel : ViewModel() {
 
     private val _uiState = MutableStateFlow(
-        GameUiState(currentRecipe = Recipe("stub", listOf())
+        GameUiState(currentRecipe = Recipe("Chocolate Cake", listOf("egg", "flour", "milk"))
     ))
     val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
+
 
 
 }
