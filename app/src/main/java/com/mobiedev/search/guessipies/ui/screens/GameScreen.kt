@@ -1,13 +1,12 @@
 package com.mobiedev.search.guessipies.ui.screens
 
-import android.R.attr.contentDescription
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -56,7 +55,7 @@ fun GameScreen(viewModel: GameViewModel){
             uiState = uiState.value,
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(.7f)
+                .weight(.6f)
         )
         CurrentRecipe(
             uiState = uiState.value
@@ -70,7 +69,6 @@ fun GameScreen(viewModel: GameViewModel){
         ScoreCard(
             uiState.value,
             modifier = Modifier
-                .weight(.3f)
         )
     }
 }
@@ -115,6 +113,8 @@ fun PossibleAnswersGrid(
 ){
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = modifier.padding(horizontal = 20.dp)
     ) {
         uiState.possibleAnswers.forEach { recipe ->
@@ -122,7 +122,6 @@ fun PossibleAnswersGrid(
                 Card(
                     modifier = Modifier
                         .height(150.dp)
-                        .padding(5.dp)
                         .clickable {
                             if (uiState.gameLive) {
                                 onClickGuess(recipe)
@@ -158,15 +157,19 @@ fun CurrentRecipe(uiState: GameUiState) {
             text = uiState.currentRecipe.title,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+            modifier = Modifier
+                .padding(vertical = 8.dp)
+                .align(Alignment.CenterHorizontally)
         )
-        HorizontalDivider()
+        HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp))
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .padding(vertical = 8.dp)
+                .fillMaxWidth()
         ) {
-            uiState.currentRecipe.ingredients.forEach { ingr ->
+            uiState.currentRecipe.ingredients.forEach { ingredient ->
                 Text(
-                    text = ingr,
+                    text = ingredient,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }
@@ -183,21 +186,27 @@ fun Link(link: Link) {
     ) {
         Text(
             text = link.recipe1.title,
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+            modifier = Modifier
+                .padding(vertical = 8.dp)
+                .align(Alignment.CenterHorizontally)
         )
         HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp))
         Text(
             text = link.ingredient,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+            modifier = Modifier
+                .padding(vertical = 8.dp)
+                .align(Alignment.CenterHorizontally)
         )
         HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp))
         Text(
             text = link.recipe2.title,
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+            modifier = Modifier
+                .padding(vertical = 8.dp)
+                .align(Alignment.CenterHorizontally)
         )
     }
 }
@@ -213,7 +222,6 @@ private fun CurrentChain(
         reverseLayout = true
     ) {
         if (!uiState.gameLive) {
-            Log.d("skdfjh", "here")
             item {
                 Image(
                     imageVector = Icons.Default.Clear,
