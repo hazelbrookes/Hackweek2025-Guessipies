@@ -36,7 +36,10 @@ class GameViewModel : ViewModel() {
             _uiState.update {
                 uiState.value.copy(
                     currentRecipe = recipeGuessed,
-                    chain = uiState.value.chain.copy(links = newLinks)
+                    chain = uiState.value.chain.copy(
+                        links = newLinks,
+                        score = newLinks.size
+                    )
                 )
             }
         } ?: run {
