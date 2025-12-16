@@ -13,10 +13,10 @@ import kotlinx.coroutines.flow.update
 data class GameUiState(
     val currentRecipe: Recipe,
     val possibleAnswers: List<Recipe> = listOf(
-        Recipe("Chocolate Cake", listOf("egg", "flour", "milk")),
-        Recipe("Sponge Cake", listOf("egg", "sponge", "jam")),
-        Recipe("Cheesecake", listOf("cheese", "flour", "cake")),
-        Recipe("Lemon Drizzle", listOf("lemon", "egg", "milk"))
+        Recipe(id = "1", title = "Chocolate Cake", ingredients = listOf("egg", "flour", "milk")),
+        Recipe(id = "2", title = "Sponge Cake", ingredients = listOf("egg", "sponge", "jam")),
+        Recipe(id = "3", title = "Cheesecake", ingredients = listOf("cheese", "flour", "cake")),
+        Recipe(id = "4", title = "Lemon Drizzle", ingredients = listOf("lemon", "egg", "milk"))
     ),
     val gameLive: Boolean = true,
     val chain: Chain = Chain(links = listOf(), score = 0)
@@ -25,8 +25,14 @@ data class GameUiState(
 class GameViewModel : ViewModel() {
 
     private val _uiState = MutableStateFlow(
-        GameUiState(currentRecipe = Recipe("Current Cake", listOf("egg", "flour", "milk"))
-    ))
+        value = GameUiState(
+            currentRecipe = Recipe(
+                id = "5",
+                title = "Current Cake",
+                ingredients = listOf("egg", "flour", "milk")
+            )
+        )
+    )
     val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
 
     fun onClickGuess(recipeGuessed: Recipe) {
@@ -35,7 +41,7 @@ class GameViewModel : ViewModel() {
                 recipeGuessed = recipeGuessed,
                 link = link
             )
-            // fetch new items
+            // TODO: fetch new items
         } ?: run {
             endGame()
         }

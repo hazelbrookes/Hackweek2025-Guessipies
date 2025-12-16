@@ -1,6 +1,7 @@
 package com.mobiedev.search.guessipies.models
 
 data class Recipe (
+    val id: String,
     val title: String,
     val ingredients : List<String>
 ) {
