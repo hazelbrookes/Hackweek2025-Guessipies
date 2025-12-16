@@ -1,20 +1,27 @@
 package com.mobiedev.search.guessipies.ui.screens
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.Icon
 import android.text.Layout
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,6 +45,38 @@ fun GameScreen(
     ) {
         CurrentRecipe(uiState.value)
         PossibleAnswersGrid(uiState.value)
+        ScoreCard(uiState.value)
+    }
+}
+
+@Composable
+fun ScoreCard(
+    uiState: GameUiState
+){
+    OutlinedCard(
+        modifier = Modifier
+            .padding(20.dp)
+            .wrapContentSize()
+    ) {
+        Row(
+            modifier = Modifier.align(Alignment.Start)
+                .height(100.dp)
+                .fillMaxWidth()
+        ) {
+            Icon(
+                Icons.Default.Settings,
+                "Cog Icon",
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(20.dp)
+            )
+            Text(
+                modifier = Modifier
+                    .align(alignment = Alignment.CenterVertically),
+                text = uiState.chain.score.toString(),
+                textAlign = TextAlign.Start
+            )
+        }
     }
 }
 
@@ -46,7 +85,8 @@ fun PossibleAnswersGrid(
     uiState: GameUiState
 ){
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2)
+        columns = GridCells.Fixed(2),
+        modifier = Modifier.padding( 20.dp)
     ) {
         uiState.possibleAnswers.forEach { recipe ->
             item {
