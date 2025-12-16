@@ -1,14 +1,17 @@
 package com.mobiedev.search.guessipies.viewmodel
 
-import android.system.Os.link
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.mobiedev.search.guessipies.mappers.toRecipe
 import com.mobiedev.search.guessipies.models.Chain
 import com.mobiedev.search.guessipies.models.Link
 import com.mobiedev.search.guessipies.models.Recipe
+import com.mobiedev.search.guessipies.network.RecipesFetcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 data class GameUiState(
     val currentRecipe: Recipe,
@@ -22,7 +25,13 @@ data class GameUiState(
     val chain: Chain = Chain(links = listOf(), score = 0)
 )
 
-class GameViewModel : ViewModel() {
+class GameViewModel(
+    private val recipesFetcher: RecipesFetcher
+) : ViewModel() {
+
+    init {
+        getRecipes()
+    }
 
     private val _uiState = MutableStateFlow(
         value = GameUiState(
@@ -41,9 +50,24 @@ class GameViewModel : ViewModel() {
                 recipeGuessed = recipeGuessed,
                 link = link
             )
-            // TODO: fetch new items
+            getRecipes(recipeGuessed)
         } ?: run {
             endGame()
+        }
+    }
+
+    fun getRecipes(recipe: Recipe? = null) {
+        viewModelScope.launch {
+            val data = recipesFetcher.getRecipes(recipe)
+            data?.let {
+                _uiState.update {
+                    uiState.value.copy(
+                        currentRecipe = data.current.toRecipe(),
+                        possibleAnswers = data.recipes.map { it.toRecipe() }
+                    )
+                }
+            }
+
         }
     }
 

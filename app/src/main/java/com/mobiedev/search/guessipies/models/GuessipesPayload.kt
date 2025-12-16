@@ -4,12 +4,12 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class GuesipesPayload(
-    val data: GuessipesData,
+data class GuessipiesPayload(
+    val data: GuessipiesData
 )
 
 @Serializable
-data class GuessipesData(
+data class GuessipiesData(
     val current: RemoteRecipe,
     val recipes: List<RemoteRecipe>
 )
