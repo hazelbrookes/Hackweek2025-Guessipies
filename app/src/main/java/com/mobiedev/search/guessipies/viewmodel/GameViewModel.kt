@@ -10,14 +10,19 @@ import kotlinx.coroutines.flow.asStateFlow
 
 data class GameUiState(
     val currentRecipe: Recipe,
-    val possibleAnswers: List<Recipe> = listOf(),
+    val possibleAnswers: List<Recipe> = listOf(
+        Recipe("Chocolate Cake", listOf("egg", "flour", "milk")),
+        Recipe("Sponge Cake", listOf("egg", "flour", "milk")),
+        Recipe("Cheesecake", listOf("egg", "flour", "milk")),
+        Recipe("Lemon Drizzle", listOf("egg", "flour", "milk"))
+    ),
     val chain: Chain = stubChain
 )
 
 class GameViewModel : ViewModel() {
 
     private val _uiState = MutableStateFlow(
-        GameUiState(currentRecipe = Recipe("stub", listOf())
+        GameUiState(currentRecipe = Recipe("Chocolate Cake", listOf("egg", "flour", "milk"))
     ))
     val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
 }
