@@ -38,6 +38,7 @@ import com.mobiedev.search.guessipies.ui.screens.HomeScreen
 import com.mobiedev.search.guessipies.ui.screens.HowToScreen
 import com.mobiedev.search.guessipies.ui.screens.ScoresScreen
 import com.mobiedev.search.guessipies.ui.theme.GuessipiesTheme
+import com.mobiedev.search.guessipies.viewmodel.GameViewModel
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -60,6 +61,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        val gameViewModel = GameViewModel()
+
         setContent {
             val navController = rememberNavController()
             val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -99,7 +102,8 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     GuessipiesAppNavigation(
                         modifier = Modifier.padding(innerPadding),
-                        navController = navController
+                        navController = navController,
+                        gameViewModel = gameViewModel
                     )
                 }
             }
@@ -111,6 +115,7 @@ class MainActivity : ComponentActivity() {
 fun GuessipiesAppNavigation(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    gameViewModel: GameViewModel
 ) {
     NavHost(
         modifier = modifier,
@@ -124,6 +129,7 @@ fun GuessipiesAppNavigation(
         }
         composable<Game> {
             GameScreen(
+                viewModel = gameViewModel,
                 onNavigateToHome= { navController.navigate(route = Home) }
             )
         }
