@@ -22,8 +22,12 @@ class RecipesFetcher(
         val request = Request.Builder().url(url).build()
         okHttpClient.newCall(request).execute().use { response ->
             if (response.isSuccessful) {
+                val json = Json {
+                    ignoreUnknownKeys = true
+                    coerceInputValues = true
+                }
                 val body = response.body?.string()
-                val payload = body?.let { Json.decodeFromString<GuessipiesPayload>(body) }
+                val payload = body?.let { json.decodeFromString<GuessipiesPayload>(body) }
                 payload?.data
             } else null
         }

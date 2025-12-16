@@ -62,7 +62,7 @@ class GameViewModel(
             data?.let {
                 _uiState.update {
                     uiState.value.copy(
-                        currentRecipe = data.current.toRecipe(),
+                        currentRecipe = data.currentRecipe.toRecipe(),
                         possibleAnswers = data.recipes.map { it.toRecipe() }
                     )
                 }

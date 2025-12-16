@@ -10,7 +10,7 @@ data class GuessipiesPayload(
 
 @Serializable
 data class GuessipiesData(
-    val current: RemoteRecipe,
+    val currentRecipe: RemoteRecipe,
     val recipes: List<RemoteRecipe>
 )
 

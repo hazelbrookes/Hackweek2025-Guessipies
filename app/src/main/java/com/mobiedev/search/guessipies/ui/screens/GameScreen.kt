@@ -248,12 +248,3 @@ private fun CurrentChain(
         }
     }
 }
-
-@SuppressLint("ViewModelConstructorInComposable")
-@Preview(showBackground = true)
-@Composable
-fun GamePreview() {
-    GuessipiesTheme {
-        GameScreen(viewModel = GameViewModel())
-    }
-}
