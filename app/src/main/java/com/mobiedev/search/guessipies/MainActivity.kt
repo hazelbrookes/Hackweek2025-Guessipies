@@ -72,25 +72,25 @@ class MainActivity : ComponentActivity() {
                         NavigationBar(windowInsets = NavigationBarDefaults.windowInsets) {
                             NavigationBarItem(
                                 selected = currentRoute == Home::class.qualifiedName,
-                                onClick = { navController.navigate(Home) },
+                                onClick = { navController.navigate("Home") },
                                 icon = { Icon(Icons.Default.Home, "Home Icon") },
                                 label = { Text("Home") }
                             )
                             NavigationBarItem(
                                 selected = currentRoute == Game::class.qualifiedName,
-                                onClick = { navController.navigate(Game) },
+                                onClick = { navController.navigate("Game") },
                                 icon = { Icon(Icons.Default.PlayArrow, "Game Icon") },
                                 label = { Text("Play") }
                             )
                             NavigationBarItem(
                                 selected = currentRoute == Howto::class.qualifiedName,
-                                onClick = { navController.navigate(Howto) },
+                                onClick = { navController.navigate("Howto") },
                                 icon = { Icon(Icons.Default.Info, "Game Information Icon") },
                                 label = { Text("Rules") }
                             )
                             NavigationBarItem(
                                 selected = currentRoute == Scores::class.qualifiedName,
-                                onClick = { navController.navigate(Scores) },
+                                onClick = { navController.navigate("Scores") },
                                 icon = { Icon(Icons.Default.AccountCircle, "Scores Icon") },
                                 label = { Text("Scores") }
                             )
@@ -115,22 +115,22 @@ fun GuessipiesAppNavigation(
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = Home
+        startDestination = "Home"
     ) {
-        composable<Home> {
+        composable("Home") {
             HomeScreen(
                 onNavigateToGame = { navController.navigate(route = Game) }
             )
         }
-        composable<Game> {
+        composable("Game") {
             GameScreen(
                 onNavigateToHome= { navController.navigate(route = Home) }
             )
         }
-        composable<Howto> {
+        composable("Howto") {
             HowToScreen()
         }
-        composable<Scores> {
+        composable("Scores") {
             ScoresScreen(
                 onNavigateToHome= { navController.navigate(route = Home) }
             )
