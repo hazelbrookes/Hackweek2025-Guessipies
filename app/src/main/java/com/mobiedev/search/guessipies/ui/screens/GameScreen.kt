@@ -2,7 +2,9 @@ package com.mobiedev.search.guessipies.ui.screens
 
 import android.R.attr.contentDescription
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +20,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Card
@@ -50,6 +53,7 @@ fun GameScreen(viewModel: GameViewModel){
     ) {
         CurrentChain(
             chain = uiState.value.chain,
+            uiState = uiState.value,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(.7f)
@@ -120,7 +124,9 @@ fun PossibleAnswersGrid(
                         .height(150.dp)
                         .padding(5.dp)
                         .clickable {
-                            onClickGuess(recipe)
+                            if (uiState.gameLive) {
+                                onClickGuess(recipe)
+                            }
                         }
                         .fillMaxSize()
                 ) {
@@ -197,11 +203,28 @@ fun Link(link: Link) {
 }
 
 @Composable
-private fun CurrentChain(chain: Chain, modifier: Modifier = Modifier) {
+private fun CurrentChain(
+    uiState: GameUiState,
+    chain: Chain,
+    modifier: Modifier = Modifier
+) {
     LazyColumn(
         modifier = modifier,
         reverseLayout = true
     ) {
+        if (!uiState.gameLive) {
+            Log.d("skdfjh", "here")
+            item {
+                Image(
+                    imageVector = Icons.Default.Clear,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .size(24.dp)
+                )
+            }
+        }
+
         itemsIndexed(chain.links.reversed()) { index, link ->
             Link(link)
             if (index != chain.links.size - 1) {

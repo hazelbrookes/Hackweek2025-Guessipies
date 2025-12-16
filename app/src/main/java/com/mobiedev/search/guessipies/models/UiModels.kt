@@ -5,6 +5,7 @@ data class Recipe (
     val ingredients : List<String>
 ) {
     fun linksToOtherRecipe(otherRecipe: Recipe): Link? {
+        if (this == otherRecipe) return null
         this.ingredients.forEach { ingredient ->
             if (otherRecipe.ingredients.contains(ingredient)) {
                 return Link(

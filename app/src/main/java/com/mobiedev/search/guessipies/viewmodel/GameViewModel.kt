@@ -17,6 +17,7 @@ data class GameUiState(
         Recipe("Cheesecake", listOf("cheese", "flour", "cake")),
         Recipe("Lemon Drizzle", listOf("lemon", "egg", "milk"))
     ),
+    val gameLive: Boolean = true,
     val chain: Chain = Chain(links = listOf(), score = 0)
 )
 
@@ -43,7 +44,9 @@ class GameViewModel : ViewModel() {
                 )
             }
         } ?: run {
-
+            _uiState.update {
+                uiState.value.copy(gameLive = false)
+            }
         }
     }
 }
