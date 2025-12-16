@@ -3,10 +3,23 @@ package com.mobiedev.search.guessipies.models
 data class Recipe (
     val title: String,
     val ingredients : List<String>
-)
+) {
+    fun linksToOtherRecipe(otherRecipe: Recipe): Link? {
+        this.ingredients.forEach { ingredient ->
+            if (otherRecipe.ingredients.contains(ingredient)) {
+                return Link(
+                    recipe1 = this,
+                    recipe2 = otherRecipe,
+                    ingredient = ingredient
+                )
+            }
+        }
+        return null
+    }
+}
 
 data class Chain (
-    val chain: List<Link>,
+    val links: List<Link>,
     val score: Int
 )
 

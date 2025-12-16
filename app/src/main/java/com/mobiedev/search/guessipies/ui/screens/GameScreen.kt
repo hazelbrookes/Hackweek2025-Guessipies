@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mobiedev.search.guessipies.models.Chain
 import com.mobiedev.search.guessipies.models.Link
+import com.mobiedev.search.guessipies.models.Recipe
 import com.mobiedev.search.guessipies.ui.theme.GuessipiesTheme
 import com.mobiedev.search.guessipies.viewmodel.GameUiState
 import com.mobiedev.search.guessipies.viewmodel.GameViewModel
@@ -53,6 +54,7 @@ fun GameScreen(viewModel: GameViewModel){
         )
         PossibleAnswersGrid(
             uiState = uiState.value,
+            onClickGuess = { viewModel.onClickGuess(it) },
             modifier = Modifier
                 .weight(1f)
         )
@@ -99,6 +101,7 @@ fun ScoreCard(
 @Composable
 fun PossibleAnswersGrid(
     uiState: GameUiState,
+    onClickGuess: (Recipe) -> Unit,
     modifier: Modifier = Modifier
 ){
     LazyVerticalGrid(
@@ -111,7 +114,9 @@ fun PossibleAnswersGrid(
                     modifier = Modifier
                         .height(150.dp)
                         .padding(5.dp)
-                        .clickable{ }
+                        .clickable {
+                            onClickGuess(recipe)
+                        }
                         .fillMaxSize()
                 ) {
                     Box(
@@ -192,7 +197,7 @@ private fun CurrentChain(chain: Chain, modifier: Modifier = Modifier) {
         modifier = modifier,
         reverseLayout = true
     ) {
-        itemsIndexed(chain.chain.reversed()) { index, link ->
+        itemsIndexed(chain.links.reversed()) { index, link ->
             Link(link)
         }
     }

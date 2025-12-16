@@ -7,28 +7,46 @@ import com.mobiedev.search.guessipies.models.Recipe
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 data class GameUiState(
     val currentRecipe: Recipe,
     val possibleAnswers: List<Recipe> = listOf(
         Recipe("Chocolate Cake", listOf("egg", "flour", "milk")),
-        Recipe("Sponge Cake", listOf("egg", "flour", "milk")),
-        Recipe("Cheesecake", listOf("egg", "flour", "milk")),
-        Recipe("Lemon Drizzle", listOf("egg", "flour", "milk"))
+        Recipe("Sponge Cake", listOf("egg", "sponge", "jam")),
+        Recipe("Cheesecake", listOf("cheese", "flour", "cake")),
+        Recipe("Lemon Drizzle", listOf("lemon", "egg", "milk"))
     ),
-    val chain: Chain = stubChain
+    val chain: Chain = Chain(links = listOf(), score = 0)
 )
 
 class GameViewModel : ViewModel() {
 
     private val _uiState = MutableStateFlow(
-        GameUiState(currentRecipe = Recipe("Chocolate Cake", listOf("egg", "flour", "milk"))
+        GameUiState(currentRecipe = Recipe("Current Cake", listOf("egg", "flour", "milk"))
     ))
     val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
+
+    fun onClickGuess(recipeGuessed: Recipe) {
+        uiState.value.currentRecipe.linksToOtherRecipe(otherRecipe = recipeGuessed)?.let { link ->
+            val newLinks = buildList {
+                addAll(uiState.value.chain.links)
+                add(link)
+            }
+            _uiState.update {
+                uiState.value.copy(
+                    currentRecipe = recipeGuessed,
+                    chain = uiState.value.chain.copy(links = newLinks)
+                )
+            }
+        } ?: run {
+
+        }
+    }
 }
 
 private val stubChain = Chain(
-    chain = listOf(
+    links = listOf(
         Link(
             recipe1 = Recipe(
                 title = "Recipe 1",
