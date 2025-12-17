@@ -13,6 +13,7 @@ okhttpClient = "4.11.0"
 kotlinxSerializationJson = "1.8.0"
 kotlinxSerializationConverter = "1.0.0"
 coil3 = "3.2.0"
+foundation = "1.10.0"
 
 [libraries]
 
@@ -39,6 +40,7 @@ kotlinx-serialization-converter = { group = "com.jakewharton.retrofit", name = "
 
 
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

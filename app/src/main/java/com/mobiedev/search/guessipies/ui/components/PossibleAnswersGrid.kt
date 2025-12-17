@@ -36,6 +36,7 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.mobiedev.search.guessipies.models.Recipe
 import com.mobiedev.search.guessipies.viewmodel.GameUiState
 
@@ -99,7 +100,8 @@ fun PossibleAnswersGrid(
                                 text = recipe.title,
                                 modifier = Modifier,
                                 textAlign = TextAlign.Center,
-                                color = Color.Black
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                fontSize = 20.sp
                             )
                         }
                     }

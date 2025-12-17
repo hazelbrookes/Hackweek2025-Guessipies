@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.converter)
     implementation(libs.coil.kt)
     implementation(libs.coil.okhttp)
+    implementation(libs.androidx.compose.foundation)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

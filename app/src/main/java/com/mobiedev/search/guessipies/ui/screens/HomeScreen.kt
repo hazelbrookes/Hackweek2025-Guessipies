@@ -1,6 +1,7 @@
 package com.mobiedev.search.guessipies.ui.screens
 
 import android.R.attr.label
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -33,7 +35,8 @@ fun HomeScreen(
 ){
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -44,11 +47,13 @@ fun HomeScreen(
             fontFamily = FontFamily.SansSerif,
             style = MaterialTheme.typography.titleLarge,
             fontSize = 44.sp,
-            modifier = Modifier.padding(bottom = 50.dp)
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.padding(bottom = 50.dp),
         )
         Spacer(modifier = Modifier.weight(0.25f))
         Button(
             onClick = { onNavigateToGame() },
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
             modifier = Modifier
                 .size(250.dp)
                 .clearAndSetSemantics{
@@ -56,7 +61,9 @@ fun HomeScreen(
                 role = Role.Button
             }
         ) {
-            Text("Play")
+            Text(text = "Play!",
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                fontSize = 50.sp,)
         }
         Spacer(modifier = Modifier.weight(0.25f))
         Button(
