@@ -1,5 +1,6 @@
 package com.mobiedev.search.guessipies.ui.screens
 
+import android.R.attr.label
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,6 +11,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -34,11 +39,21 @@ fun HomeScreen(
             style = MaterialTheme.typography.titleLarge
         )
         Button(
-            onClick ={ onNavigateToGame() }
+            onClick = { onNavigateToGame() },
+            modifier = Modifier.clearAndSetSemantics{
+                contentDescription = "Play Game"
+                role = Role.Button
+            }
         ) {
             Text("Play")
         }
-        Button({  }) {
+        Button(
+            {  },
+            modifier = Modifier.clearAndSetSemantics{
+                contentDescription = "Give Feedback"
+                role = Role.Button
+            }
+        ) {
             Text("Feedback")
         }
     }
