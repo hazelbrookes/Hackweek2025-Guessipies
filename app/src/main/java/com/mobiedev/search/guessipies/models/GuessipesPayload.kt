@@ -38,5 +38,5 @@ data class Section(
 
 @Serializable
 data class Ingredient(
-    @SerialName("id") val name: String
+    @SerialName("id") val name: String?
 )

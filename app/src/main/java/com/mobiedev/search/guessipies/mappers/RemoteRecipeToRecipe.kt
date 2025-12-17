@@ -10,7 +10,7 @@ fun RemoteRecipe.toRecipe(): Recipe = Recipe(
         stage.sections.flatMap { section ->
             section.ingredients.mapNotNull { ingredient ->
                 ingredient?.name
-            }
+            }.distinct()
         }
     }
 )
