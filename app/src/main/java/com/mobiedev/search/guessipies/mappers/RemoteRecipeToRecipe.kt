@@ -12,6 +12,6 @@ fun RemoteRecipe.toRecipe(): Recipe = Recipe(
             section.ingredients.mapNotNull { ingredient ->
                 ingredient?.name?.replace("_", " ")?.capitalize()
             }.distinct()
-        }
-    }
+        }.distinct()
+    }.distinct()
 )

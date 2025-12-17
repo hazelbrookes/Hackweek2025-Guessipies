@@ -26,6 +26,7 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -118,16 +119,11 @@ fun PossibleAnswersGrid(
         verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = modifier.padding(horizontal = 20.dp)
     ) {
-        uiState.possibleAnswers.forEach { recipe ->
-            item {
+        if (uiState.isLoading) {
+            items(4) {
                 Card(
                     modifier = Modifier
-                        .height(150.dp)
-                        .clickable {
-                            if (uiState.gameLive) {
-                                onClickGuess(recipe)
-                            }
-                        }
+                        .height(130.dp)
                         .fillMaxSize()
                 ) {
                     Box(
@@ -136,11 +132,35 @@ fun PossibleAnswersGrid(
                             .padding(all = 8.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(
-                            text = recipe.title,
-                            modifier = Modifier,
-                            textAlign = TextAlign.Center
-                        )
+                        CircularProgressIndicator()
+                    }
+                }
+            }
+        } else {
+            uiState.possibleAnswers.forEach { recipe ->
+                item {
+                    Card(
+                        modifier = Modifier
+                            .height(130.dp)
+                            .clickable {
+                                if (uiState.gameLive) {
+                                    onClickGuess(recipe)
+                                }
+                            }
+                            .fillMaxSize()
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(all = 8.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = recipe.title,
+                                modifier = Modifier,
+                                textAlign = TextAlign.Center
+                            )
+                        }
                     }
                 }
             }
@@ -168,7 +188,7 @@ fun CurrentRecipe(uiState: GameUiState) {
         HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp))
         Column(
             modifier = Modifier
-                .height(200.dp)
+                .height(100.dp)
                 .verticalScroll(rememberScrollState())
                 .padding(vertical = 8.dp)
                 .fillMaxWidth()

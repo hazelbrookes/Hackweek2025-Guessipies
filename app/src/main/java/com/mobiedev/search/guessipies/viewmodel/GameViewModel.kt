@@ -22,7 +22,8 @@ data class GameUiState(
         Recipe(id = "4", title = "Lemon Drizzle", ingredients = listOf("lemon", "egg", "milk"))
     ),
     val gameLive: Boolean = true,
-    val chain: Chain = Chain(links = listOf(), score = 0)
+    val chain: Chain = Chain(links = listOf(), score = 0),
+    val isLoading: Boolean = false
 )
 
 class GameViewModel(
@@ -39,7 +40,8 @@ class GameViewModel(
                 id = "5",
                 title = "Current Cake",
                 ingredients = listOf("egg", "flour", "milk")
-            )
+            ),
+            isLoading = false
         )
     )
     val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
@@ -50,6 +52,11 @@ class GameViewModel(
                 recipeGuessed = recipeGuessed,
                 link = link
             )
+            _uiState.update {
+                uiState.value.copy(
+                    isLoading = true
+                )
+            }
             getRecipes(recipeGuessed)
         } ?: run {
             endGame()
@@ -63,11 +70,11 @@ class GameViewModel(
                 _uiState.update {
                     uiState.value.copy(
                         currentRecipe = data.currentRecipe.toRecipe(),
-                        possibleAnswers = data.recipes.map { it.toRecipe() }
+                        possibleAnswers = data.recipes.map { it.toRecipe() },
+                        isLoading = false
                     )
                 }
             }
-
         }
     }
 
