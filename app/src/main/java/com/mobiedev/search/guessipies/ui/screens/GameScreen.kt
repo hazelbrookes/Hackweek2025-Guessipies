@@ -40,14 +40,14 @@ fun GameScreen(
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        CurrentChain(
-            chain = uiState.value.chain,
-            uiState = uiState.value,
-            onClickOpenRecipe = onClickOpenRecipe,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(.6f)
-        )
+//        CurrentChain(
+//            chain = uiState.value.chain,
+//            uiState = uiState.value,
+//            onClickOpenRecipe = onClickOpenRecipe,
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .weight(.6f)
+//        )
         CurrentRecipeCard(uiState = uiState.value, onClickOpenRecipe)
         PossibleAnswersGrid(
             uiState = uiState.value,
@@ -84,7 +84,6 @@ fun CurrentChain(
                 )
             }
         }
-
         itemsIndexed(chain.links.reversed()) { index, link ->
             LinkCard(
                 link = link,
