@@ -1,13 +1,10 @@
 package com.mobiedev.search.guessipies.ui.screens
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,6 +19,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.Settings
@@ -38,25 +36,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mobiedev.search.guessipies.models.Chain
 import com.mobiedev.search.guessipies.models.Link
 import com.mobiedev.search.guessipies.models.Recipe
-import com.mobiedev.search.guessipies.ui.theme.GuessipiesTheme
 import com.mobiedev.search.guessipies.viewmodel.GameUiState
 import com.mobiedev.search.guessipies.viewmodel.GameViewModel
 
 @Composable
-fun GameScreen(viewModel: GameViewModel){
+fun GameScreen(viewModel: GameViewModel, onClickOpenRecipe: (String) -> Unit) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
+    Column(modifier = Modifier.fillMaxSize()) {
         CurrentChain(
             chain = uiState.value.chain,
             uiState = uiState.value,
+            onClickOpenRecipe = onClickOpenRecipe,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(.6f)
@@ -175,7 +170,6 @@ fun CurrentRecipe(uiState: GameUiState) {
             .fillMaxWidth()
             .padding(20.dp)
     ) {
-
         Text(
             text = uiState.currentRecipe.title,
             style = MaterialTheme.typography.titleLarge,
@@ -205,21 +199,34 @@ fun CurrentRecipe(uiState: GameUiState) {
 }
 
 @Composable
-fun Link(link: Link) {
+fun Link(link: Link, onClickOpenRecipe: (String) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 60.dp, vertical = 10.dp)
     ) {
-        Text(
-            text = link.recipe1.title,
-            style = MaterialTheme.typography.titleMedium,
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .padding(all = 8.dp)
-                .align(Alignment.CenterHorizontally)
-        )
+        Row(
+            modifier = Modifier.clickable {
+                onClickOpenRecipe(link.recipe1.id)
+            }
+        ) {
+            Text(
+                text = link.recipe1.title,
+                style = MaterialTheme.typography.titleMedium,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .padding(all = 8.dp)
+                    .weight(1f)
+            )
+            Image(
+                imageVector = Icons.AutoMirrored.Filled.OpenInNew,
+                contentDescription = "Open in browser",
+                modifier = Modifier
+                    .padding(all = 8.dp)
+                    .size(24.dp)
+            )
+        }
         HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp))
         Text(
             text = link.ingredient,
@@ -228,14 +235,29 @@ fun Link(link: Link) {
                 .align(Alignment.CenterHorizontally)
         )
         HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp))
-        Text(
-            text = link.recipe2.title,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .padding(all = 8.dp)
-                .align(Alignment.CenterHorizontally)
-        )
+        Row(
+            modifier = Modifier.clickable {
+                onClickOpenRecipe(link.recipe2.id)
+            }
+        ) {
+            Text(
+                text = link.recipe2.title,
+                style = MaterialTheme.typography.titleMedium,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .padding(all = 8.dp)
+                    .weight(1f)
+                    .fillMaxWidth()
+            )
+            Image(
+                imageVector = Icons.AutoMirrored.Filled.OpenInNew,
+                contentDescription = "Open in browser",
+                modifier = Modifier
+                    .padding(all = 8.dp)
+                    .size(24.dp)
+            )
+        }
     }
 }
 
@@ -243,6 +265,7 @@ fun Link(link: Link) {
 private fun CurrentChain(
     uiState: GameUiState,
     chain: Chain,
+    onClickOpenRecipe: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -262,7 +285,10 @@ private fun CurrentChain(
         }
 
         itemsIndexed(chain.links.reversed()) { index, link ->
-            Link(link)
+            Link(
+                link = link,
+                onClickOpenRecipe = onClickOpenRecipe
+            )
             if (index != chain.links.size - 1) {
                 Image(
                     imageVector = Icons.Default.Link,

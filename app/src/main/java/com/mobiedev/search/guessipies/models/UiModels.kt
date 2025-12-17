@@ -3,7 +3,7 @@ package com.mobiedev.search.guessipies.models
 data class Recipe (
     val id: String,
     val title: String,
-    val ingredients : List<String>
+    val ingredients: List<String>
 ) {
     fun linksToOtherRecipe(otherRecipe: Recipe): Link? {
         if (this == otherRecipe) return null

@@ -1,5 +1,8 @@
 package com.mobiedev.search.guessipies
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -128,6 +132,7 @@ fun GuessipiesAppNavigation(
     navController: NavHostController,
     gameViewModel: GameViewModel
 ) {
+    val context = LocalContext.current
     NavHost(
         modifier = modifier,
         navController = navController,
@@ -139,7 +144,15 @@ fun GuessipiesAppNavigation(
             )
         }
         composable<Game> {
-            GameScreen(viewModel = gameViewModel)
+            GameScreen(
+                viewModel = gameViewModel,
+                onClickOpenRecipe = { recipeId ->
+                    openRecipeLink(
+                        context = context,
+                        recipeId = recipeId
+                    )
+                }
+            )
         }
         composable<Howto> {
             HowToScreen()
@@ -150,4 +163,10 @@ fun GuessipiesAppNavigation(
             )
         }
     }
+}
+
+private fun openRecipeLink(context: Context, recipeId: String) {
+    val url = "https://www.bbc.co.uk/food/recipes/$recipeId"
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+    context.startActivity(intent)
 }
