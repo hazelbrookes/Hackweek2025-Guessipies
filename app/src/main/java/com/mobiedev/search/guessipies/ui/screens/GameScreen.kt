@@ -48,7 +48,7 @@ fun GameScreen(
                 .fillMaxWidth()
                 .weight(.6f)
         )
-        CurrentRecipeCard(uiState = uiState.value)
+        CurrentRecipeCard(uiState = uiState.value, onClickOpenRecipe)
         PossibleAnswersGrid(
             uiState = uiState.value,
             onClickGuess = { viewModel.onClickGuess(it) },

@@ -2,6 +2,7 @@ package com.mobiedev.search.guessipies.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,11 +35,14 @@ import coil3.request.crossfade
 import com.mobiedev.search.guessipies.viewmodel.GameUiState
 
 @Composable
-fun CurrentRecipeCard(uiState: GameUiState) {
+fun CurrentRecipeCard(uiState: GameUiState, onClickOpenRecipe: (String) -> Unit) {
     Card(
         modifier = Modifier
             .clearAndSetSemantics{
                 contentDescription = "Current Recipe: " + uiState.currentRecipe.title + "." + "Ingredients: " + uiState.currentRecipe.ingredients.joinToString(",")
+            }
+            .clickable {
+                onClickOpenRecipe(uiState.currentRecipe.id)
             }
             .fillMaxWidth()
             .padding(20.dp)
@@ -76,7 +80,7 @@ fun CurrentRecipeCard(uiState: GameUiState) {
 private fun RecipeImage(url: String) {
     Box(modifier = Modifier
         .fillMaxWidth()
-        .height(100.dp)
+        .height(200.dp)
     ) {
         val painter = rememberAsyncImagePainter(
             model = ImageRequest.Builder(LocalContext.current)
