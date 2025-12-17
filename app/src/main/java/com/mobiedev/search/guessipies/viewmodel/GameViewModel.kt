@@ -78,6 +78,16 @@ class GameViewModel(
         }
     }
 
+    fun resetGameState(){
+        _uiState.update {
+            uiState.value.copy(
+                gameLive = true,
+                chain = Chain(links = listOf(), score = 0)
+            )
+        }
+        getRecipes()
+    }
+
     private fun updateLinks(recipeGuessed: Recipe, link: Link) {
         val newLinks = buildList {
             addAll(uiState.value.chain.links)

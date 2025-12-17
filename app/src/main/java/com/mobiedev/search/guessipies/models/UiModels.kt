@@ -1,5 +1,8 @@
 package com.mobiedev.search.guessipies.models
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Recipe (
     val id: String,
     val title: String,
@@ -20,11 +23,13 @@ data class Recipe (
     }
 }
 
+@Serializable
 data class Chain (
     val links: List<Link>,
     val score: Int
 )
 
+@Serializable
 data class Link (
     val recipe1: Recipe,
     val ingredient: String,
