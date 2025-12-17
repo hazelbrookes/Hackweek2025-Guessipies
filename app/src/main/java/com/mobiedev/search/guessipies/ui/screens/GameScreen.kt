@@ -60,9 +60,7 @@ fun GameScreen(viewModel: GameViewModel){
                 .fillMaxWidth()
                 .weight(.6f)
         )
-        CurrentRecipe(
-            uiState = uiState.value
-        )
+        CurrentRecipe(uiState = uiState.value)
         PossibleAnswersGrid(
             uiState = uiState.value,
             onClickGuess = { viewModel.onClickGuess(it) },
@@ -133,7 +131,9 @@ fun PossibleAnswersGrid(
                         .fillMaxSize()
                 ) {
                     Box(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(all = 8.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
@@ -159,9 +159,10 @@ fun CurrentRecipe(uiState: GameUiState) {
         Text(
             text = uiState.currentRecipe.title,
             style = MaterialTheme.typography.titleLarge,
+            textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
-                .padding(vertical = 8.dp)
+                .padding(all = 8.dp)
                 .align(Alignment.CenterHorizontally)
         )
         HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp))
@@ -175,6 +176,7 @@ fun CurrentRecipe(uiState: GameUiState) {
             uiState.currentRecipe.ingredients.forEach { ingredient ->
                 Text(
                     text = ingredient,
+                    textAlign = TextAlign.Center,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }
@@ -192,16 +194,17 @@ fun Link(link: Link) {
         Text(
             text = link.recipe1.title,
             style = MaterialTheme.typography.titleMedium,
+            textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
-                .padding(vertical = 8.dp)
+                .padding(all = 8.dp)
                 .align(Alignment.CenterHorizontally)
         )
         HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp))
         Text(
             text = link.ingredient,
             modifier = Modifier
-                .padding(vertical = 8.dp)
+                .padding(all = 8.dp)
                 .align(Alignment.CenterHorizontally)
         )
         HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp))
@@ -210,7 +213,7 @@ fun Link(link: Link) {
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
-                .padding(vertical = 8.dp)
+                .padding(all = 8.dp)
                 .align(Alignment.CenterHorizontally)
         )
     }
