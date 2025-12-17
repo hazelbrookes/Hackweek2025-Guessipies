@@ -1,5 +1,7 @@
 package com.mobiedev.search.guessipies.ui.screens
 
+import android.R.attr.onClick
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -34,8 +36,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mobiedev.search.guessipies.models.Chain
@@ -77,6 +83,9 @@ fun ScoreCard(
 ){
     OutlinedCard(
         modifier = modifier
+            .clearAndSetSemantics{
+                contentDescription = "Game score: " + uiState.chain.score.toString()
+            }
             .padding(horizontal = 20.dp, vertical = 10.dp)
             .wrapContentSize()
     ) {
@@ -118,6 +127,9 @@ fun PossibleAnswersGrid(
             items(4) {
                 Card(
                     modifier = Modifier
+                        .clearAndSetSemantics {
+                            contentDescription = "Loading Answers"
+                        }
                         .height(130.dp)
                         .fillMaxSize()
                 ) {
@@ -137,10 +149,16 @@ fun PossibleAnswersGrid(
                     Card(
                         modifier = Modifier
                             .height(130.dp)
-                            .clickable {
-                                if (uiState.gameLive) {
-                                    onClickGuess(recipe)
+                            .clickable(
+                                onClickLabel = "make connection guess",
+                                onClick = {
+                                    if (uiState.gameLive) {
+                                        onClickGuess(recipe)
+                                    }
                                 }
+                            )
+                            .clearAndSetSemantics{
+                                contentDescription = "Possible Answer: " + recipe.title
                             }
                             .fillMaxSize()
                     ) {
@@ -167,6 +185,9 @@ fun PossibleAnswersGrid(
 fun CurrentRecipe(uiState: GameUiState) {
     Card(
         modifier = Modifier
+            .clearAndSetSemantics{
+                contentDescription = "Current Recipe: " + uiState.currentRecipe.title + "." + "Ingredients: " + uiState.currentRecipe.ingredients.joinToString(",")
+            }
             .fillMaxWidth()
             .padding(20.dp)
     ) {
@@ -206,9 +227,14 @@ fun Link(link: Link, onClickOpenRecipe: (String) -> Unit) {
             .padding(horizontal = 60.dp, vertical = 10.dp)
     ) {
         Row(
-            modifier = Modifier.clickable {
-                onClickOpenRecipe(link.recipe1.id)
-            }
+            modifier = Modifier
+                .clickable(
+                    onClickLabel = "open recipe in browser",
+                    onClick = { onClickOpenRecipe(link.recipe1.id) }
+                )
+                .clearAndSetSemantics {
+                    contentDescription = "Chained Recipe: " + link.recipe1.title
+                }
         ) {
             Text(
                 text = link.recipe1.title,
@@ -221,7 +247,7 @@ fun Link(link: Link, onClickOpenRecipe: (String) -> Unit) {
             )
             Image(
                 imageVector = Icons.AutoMirrored.Filled.OpenInNew,
-                contentDescription = "Open in browser",
+                contentDescription = null,
                 modifier = Modifier
                     .padding(all = 8.dp)
                     .size(24.dp)
@@ -231,14 +257,22 @@ fun Link(link: Link, onClickOpenRecipe: (String) -> Unit) {
         Text(
             text = link.ingredient,
             modifier = Modifier
+                .clearAndSetSemantics{
+                    contentDescription = "Linked Ingredient: " + link.ingredient
+                }
                 .padding(all = 8.dp)
                 .align(Alignment.CenterHorizontally)
         )
         HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp))
         Row(
-            modifier = Modifier.clickable {
-                onClickOpenRecipe(link.recipe2.id)
-            }
+            modifier = Modifier
+                .clickable(
+                    onClickLabel = "open recipe in browser",
+                    onClick = { onClickOpenRecipe(link.recipe2.id) }
+                )
+                .clearAndSetSemantics{
+                    contentDescription = "Chained Recipe: " + link.recipe2.title
+                }
         ) {
             Text(
                 text = link.recipe2.title,
@@ -252,7 +286,7 @@ fun Link(link: Link, onClickOpenRecipe: (String) -> Unit) {
             )
             Image(
                 imageVector = Icons.AutoMirrored.Filled.OpenInNew,
-                contentDescription = "Open in browser",
+                contentDescription = null,
                 modifier = Modifier
                     .padding(all = 8.dp)
                     .size(24.dp)
@@ -295,6 +329,7 @@ private fun CurrentChain(
                     contentDescription = "",
                     modifier = Modifier
                         .rotate(90f)
+                        .clearAndSetSemantics { }
                         .fillMaxWidth()
                         .size(24.dp)
                 )
