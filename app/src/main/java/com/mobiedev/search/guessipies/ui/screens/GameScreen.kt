@@ -3,6 +3,7 @@ package com.mobiedev.search.guessipies.ui.screens
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,11 +19,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -57,9 +61,7 @@ fun GameScreen(viewModel: GameViewModel){
                 .fillMaxWidth()
                 .weight(.6f)
         )
-        CurrentRecipe(
-            uiState = uiState.value
-        )
+        CurrentRecipe(uiState = uiState.value)
         PossibleAnswersGrid(
             uiState = uiState.value,
             onClickGuess = { viewModel.onClickGuess(it) },
@@ -117,27 +119,48 @@ fun PossibleAnswersGrid(
         verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = modifier.padding(horizontal = 20.dp)
     ) {
-        uiState.possibleAnswers.forEach { recipe ->
-            item {
+        if (uiState.isLoading) {
+            items(4) {
                 Card(
                     modifier = Modifier
-                        .height(150.dp)
-                        .clickable {
-                            if (uiState.gameLive) {
-                                onClickGuess(recipe)
-                            }
-                        }
+                        .height(130.dp)
                         .fillMaxSize()
                 ) {
                     Box(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(all = 8.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(
-                            text = recipe.title,
-                            modifier = Modifier,
-                            textAlign = TextAlign.Center
-                        )
+                        CircularProgressIndicator()
+                    }
+                }
+            }
+        } else {
+            uiState.possibleAnswers.forEach { recipe ->
+                item {
+                    Card(
+                        modifier = Modifier
+                            .height(130.dp)
+                            .clickable {
+                                if (uiState.gameLive) {
+                                    onClickGuess(recipe)
+                                }
+                            }
+                            .fillMaxSize()
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(all = 8.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = recipe.title,
+                                modifier = Modifier,
+                                textAlign = TextAlign.Center
+                            )
+                        }
                     }
                 }
             }
@@ -156,20 +179,24 @@ fun CurrentRecipe(uiState: GameUiState) {
         Text(
             text = uiState.currentRecipe.title,
             style = MaterialTheme.typography.titleLarge,
+            textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
-                .padding(vertical = 8.dp)
+                .padding(all = 8.dp)
                 .align(Alignment.CenterHorizontally)
         )
         HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp))
         Column(
             modifier = Modifier
+                .height(100.dp)
+                .verticalScroll(rememberScrollState())
                 .padding(vertical = 8.dp)
                 .fillMaxWidth()
         ) {
             uiState.currentRecipe.ingredients.forEach { ingredient ->
                 Text(
                     text = ingredient,
+                    textAlign = TextAlign.Center,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }
@@ -187,16 +214,17 @@ fun Link(link: Link) {
         Text(
             text = link.recipe1.title,
             style = MaterialTheme.typography.titleMedium,
+            textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
-                .padding(vertical = 8.dp)
+                .padding(all = 8.dp)
                 .align(Alignment.CenterHorizontally)
         )
         HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp))
         Text(
             text = link.ingredient,
             modifier = Modifier
-                .padding(vertical = 8.dp)
+                .padding(all = 8.dp)
                 .align(Alignment.CenterHorizontally)
         )
         HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp))
@@ -205,7 +233,7 @@ fun Link(link: Link) {
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
-                .padding(vertical = 8.dp)
+                .padding(all = 8.dp)
                 .align(Alignment.CenterHorizontally)
         )
     }
@@ -246,14 +274,5 @@ private fun CurrentChain(
                 )
             }
         }
-    }
-}
-
-@SuppressLint("ViewModelConstructorInComposable")
-@Preview(showBackground = true)
-@Composable
-fun GamePreview() {
-    GuessipiesTheme {
-        GameScreen(viewModel = GameViewModel())
     }
 }

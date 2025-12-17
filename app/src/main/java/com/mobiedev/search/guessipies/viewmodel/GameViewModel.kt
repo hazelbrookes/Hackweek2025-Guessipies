@@ -1,102 +1,102 @@
 package com.mobiedev.search.guessipies.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.mobiedev.search.guessipies.mappers.toRecipe
 import com.mobiedev.search.guessipies.models.Chain
 import com.mobiedev.search.guessipies.models.Link
 import com.mobiedev.search.guessipies.models.Recipe
+import com.mobiedev.search.guessipies.network.RecipesFetcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 data class GameUiState(
     val currentRecipe: Recipe,
     val possibleAnswers: List<Recipe> = listOf(
-        Recipe("Chocolate Cake", listOf("egg", "flour", "milk")),
-        Recipe("Sponge Cake", listOf("egg", "sponge", "jam")),
-        Recipe("Cheesecake", listOf("cheese", "flour", "cake")),
-        Recipe("Lemon Drizzle", listOf("lemon", "egg", "milk"))
+        Recipe(id = "1", title = "Chocolate Cake", ingredients = listOf("egg", "flour", "milk")),
+        Recipe(id = "2", title = "Sponge Cake", ingredients = listOf("egg", "sponge", "jam")),
+        Recipe(id = "3", title = "Cheesecake", ingredients = listOf("cheese", "flour", "cake")),
+        Recipe(id = "4", title = "Lemon Drizzle", ingredients = listOf("lemon", "egg", "milk"))
     ),
     val gameLive: Boolean = true,
-    val chain: Chain = Chain(links = listOf(), score = 0)
+    val chain: Chain = Chain(links = listOf(), score = 0),
+    val isLoading: Boolean = false
 )
 
-class GameViewModel : ViewModel() {
+class GameViewModel(
+    private val recipesFetcher: RecipesFetcher
+) : ViewModel() {
+
+    init {
+        getRecipes()
+    }
 
     private val _uiState = MutableStateFlow(
-        GameUiState(currentRecipe = Recipe("Current Cake", listOf("egg", "flour", "milk"))
-    ))
+        value = GameUiState(
+            currentRecipe = Recipe(
+                id = "5",
+                title = "Current Cake",
+                ingredients = listOf("egg", "flour", "milk")
+            ),
+            isLoading = false
+        )
+    )
     val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
 
     fun onClickGuess(recipeGuessed: Recipe) {
         uiState.value.currentRecipe.linksToOtherRecipe(otherRecipe = recipeGuessed)?.let { link ->
-            val newLinks = buildList {
-                addAll(uiState.value.chain.links)
-                add(link)
-            }
+            updateLinks(
+                recipeGuessed = recipeGuessed,
+                link = link
+            )
             _uiState.update {
                 uiState.value.copy(
-                    currentRecipe = recipeGuessed,
-                    chain = uiState.value.chain.copy(
-                        links = newLinks,
-                        score = newLinks.size
-                    )
+                    isLoading = true
                 )
             }
+            getRecipes(recipeGuessed)
         } ?: run {
-            _uiState.update {
-                uiState.value.copy(gameLive = false)
+            endGame()
+        }
+    }
+
+    fun getRecipes(recipe: Recipe? = null) {
+        viewModelScope.launch {
+            val data = recipesFetcher.getRecipes(recipe)
+            data?.let {
+                _uiState.update {
+                    uiState.value.copy(
+                        currentRecipe = data.currentRecipe.toRecipe(),
+                        possibleAnswers = data.recipes.map { it.toRecipe() },
+                        isLoading = false
+                    )
+                }
             }
         }
     }
-}
 
-private val stubChain = Chain(
-    links = listOf(
-        Link(
-            recipe1 = Recipe(
-                title = "Recipe 1",
-                ingredients = listOf("R1 & R2 matcher", "xyz")
-            ),
-            ingredient = "R1 & R2 matcher",
-            recipe2 = Recipe(
-                title = "Recipe 2",
-                ingredients = listOf("R1 & R2 matcher", "R2 & R3 matcher", "abc")
+    private fun updateLinks(recipeGuessed: Recipe, link: Link) {
+        val newLinks = buildList {
+            addAll(uiState.value.chain.links)
+            add(link)
+        }
+        _uiState.update {
+            uiState.value.copy(
+                currentRecipe = recipeGuessed, // TODO: remove
+                chain = uiState.value.chain.copy(
+                    links = newLinks,
+                    score = newLinks.size
+                )
             )
-        ),
-        Link(
-            recipe1 = Recipe(
-                title = "Recipe 2",
-                ingredients = listOf("R1 & R2 matcher", "R2 & R3 matcher", "123")
-            ),
-            ingredient = "R2 & R3 matcher",
-            recipe2 = Recipe(
-                title = "Recipe 3",
-                ingredients = listOf("R2 & R3 matcher", "R3 & R4 matcher")
-            )
-        ),
-        Link(
-            recipe1 = Recipe(
-                title = "Recipe 3",
-                ingredients = listOf("R2 & R3 matcher", "R3 & R4 matcher")
-            ),
-            ingredient = "R3 & R4 matcher",
-            recipe2 = Recipe(
-                title = "Recipe 4",
-                ingredients = listOf("R3 & R4 matcher", "R4 & R5 matcher")
-            )
-        ),
-        Link(
-            recipe1 = Recipe(
-                title = "Recipe 4",
-                ingredients = listOf("R4 & R5 matcher", "cheese")
-            ),
-            ingredient = "R4 & R5 matcher",
-            recipe2 = Recipe(
-                title = "Recipe 5",
-                ingredients = listOf("R4 & R5 matcher", "beans")
-            )
-        )
-    ),
-    score = 0
-)
+        }
+    }
+
+    private fun endGame() {
+        _uiState.update {
+            uiState.value.copy(gameLive = false)
+        }
+    }
+}
