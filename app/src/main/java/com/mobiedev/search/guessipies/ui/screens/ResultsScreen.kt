@@ -33,37 +33,20 @@ fun ResultsScreen(
     onNavigateToGame: () -> Unit
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
         //Show full game chain
-        LazyColumn(
+        CurrentChain(
+            chain = uiState.value.chain,
+            uiState = uiState.value,
+            onClickOpenRecipe = onClickOpenRecipe,
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.CenterHorizontally)
-                .weight(.6f),
-            reverseLayout = true
-        ) {
-
-            itemsIndexed(uiState.value.chain.links.reversed()) { index, link ->
-                LinkCard(
-                    link = link,
-                    onClickOpenRecipe = onClickOpenRecipe
-                )
-                if (index != uiState.value.chain.links.size - 1) {
-                    Image(
-                        imageVector = Icons.Default.Link,
-                        contentDescription = "",
-                        modifier = Modifier
-                            .rotate(90f)
-                            .clearAndSetSemantics { }
-                            .fillMaxWidth()
-                            .size(24.dp)
-                    )
-                }
-            }
-        }
+                .weight(.6f)
+        )
         //Show score
         ScoreCard(uiState.value)
         //Show reset game button

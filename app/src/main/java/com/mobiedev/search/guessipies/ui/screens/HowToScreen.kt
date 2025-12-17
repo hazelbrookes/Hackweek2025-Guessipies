@@ -57,7 +57,7 @@ fun HowToScreen() {
         Text(
             text = "1. Start:\n" +
                     "    - The game presents a random recipe (e.g., “Easy chocolate cake”).\n" +
-                    "    - The four key ingredients are listed that are within the recipe.\n" +
+                    "    - The ingredients are listed that are within the recipe.\n" +
                     "2. Chain Building:\n" +
                     "    - The player is shown four possible next recipes to choose from.\n" +
                     "    - To continue the chain, the next recipe chosen must share at least one key ingredient with the previous recipe (e.g., “chocolate”, “egg”, “flour”).\n" +
