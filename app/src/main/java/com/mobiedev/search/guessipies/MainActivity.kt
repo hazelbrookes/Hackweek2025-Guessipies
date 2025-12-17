@@ -33,7 +33,9 @@ import com.mobiedev.search.guessipies.ui.screens.ScoresScreen
 import com.mobiedev.search.guessipies.ui.theme.GuessipiesTheme
 import com.mobiedev.search.guessipies.viewmodel.GameViewModel
 import kotlinx.serialization.Serializable
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Response
 
 @Serializable
 object Home
@@ -50,13 +52,25 @@ object Scores
 @Serializable
 object Game
 
+class RetryOn500Interceptor(private val maxRetries: Int = 5) : Interceptor {
+    override fun intercept(chain: Interceptor.Chain): Response {
+        var response = chain.proceed(chain.request())
+        var tryCount = 0
+        while (response.code == 500 && tryCount < maxRetries) {
+            response.close()
+            tryCount++
+            response = chain.proceed(chain.request())
+        }
+        return response
+    }
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val okHttpClient = OkHttpClient()
+        val okHttpClient = OkHttpClient.Builder().addInterceptor(RetryOn500Interceptor()).build()
         val recipesFetcher = RecipesFetcher(okHttpClient)
         val gameViewModel = GameViewModel(recipesFetcher)
 
