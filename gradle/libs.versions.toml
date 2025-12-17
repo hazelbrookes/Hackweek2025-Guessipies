@@ -12,8 +12,12 @@ composeNavigation = "2.9.6"
 okhttpClient = "4.11.0"
 kotlinxSerializationJson = "1.8.0"
 kotlinxSerializationConverter = "1.0.0"
+coil3 = "3.2.0"
 
 [libraries]
+
+coil-kt = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil3" }
+coil-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil3" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
