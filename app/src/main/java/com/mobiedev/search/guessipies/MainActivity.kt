@@ -24,15 +24,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.mobiedev.search.guessipies.models.Chain
 import com.mobiedev.search.guessipies.network.RecipesFetcher
 import com.mobiedev.search.guessipies.ui.screens.GameScreen
 import com.mobiedev.search.guessipies.ui.screens.HomeScreen
 import com.mobiedev.search.guessipies.ui.screens.HowToScreen
+import com.mobiedev.search.guessipies.ui.screens.ResultsScreen
 import com.mobiedev.search.guessipies.ui.screens.ScoresScreen
 import com.mobiedev.search.guessipies.ui.theme.GuessipiesTheme
 import com.mobiedev.search.guessipies.viewmodel.GameViewModel
@@ -95,12 +99,6 @@ class MainActivity : ComponentActivity() {
                                 label = { Text("Home") }
                             )
                             NavigationBarItem(
-                                selected = currentRoute == Game::class.qualifiedName,
-                                onClick = { navController.navigate(Game) },
-                                icon = { Icon(Icons.Default.PlayArrow, "Game Icon") },
-                                label = { Text("Play") }
-                            )
-                            NavigationBarItem(
                                 selected = currentRoute == Howto::class.qualifiedName,
                                 onClick = { navController.navigate(Howto) },
                                 icon = { Icon(Icons.Default.Info, "Game Information Icon") },
@@ -140,7 +138,10 @@ fun GuessipiesAppNavigation(
     ) {
         composable<Home> {
             HomeScreen(
-                onNavigateToGame = { navController.navigate(route = Game) }
+                onNavigateToGame = {
+                    gameViewModel.resetGameState()
+                    navController.navigate(route = Game)
+                }
             )
         }
         composable<Game> {
@@ -151,6 +152,9 @@ fun GuessipiesAppNavigation(
                         context = context,
                         recipeId = recipeId
                     )
+                },
+                onNavigateToResults = {
+                    navController.navigate(route = Results)
                 }
             )
         }
@@ -160,6 +164,20 @@ fun GuessipiesAppNavigation(
         composable<Scores> {
             ScoresScreen(
                 onNavigateToHome= { navController.navigate(route = Home) }
+            )
+        }
+        composable<Results> {
+            ResultsScreen(
+                gameViewModel,
+                onClickOpenRecipe = { recipeId ->
+                    openRecipeLink(
+                        context = context,
+                        recipeId = recipeId
+                    )
+                },
+                onNavigateToGame = {
+                    navController.navigate(route = Game)
+                }
             )
         }
     }

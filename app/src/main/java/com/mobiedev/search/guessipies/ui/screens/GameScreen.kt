@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -25,8 +26,19 @@ import com.mobiedev.search.guessipies.viewmodel.GameUiState
 import com.mobiedev.search.guessipies.viewmodel.GameViewModel
 
 @Composable
-fun GameScreen(viewModel: GameViewModel, onClickOpenRecipe: (String) -> Unit) {
+fun GameScreen(
+    viewModel: GameViewModel,
+    onClickOpenRecipe: (String) -> Unit,
+    onNavigateToResults: () -> Unit
+) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(uiState.value.gameLive){
+        if(!uiState.value.gameLive){
+            onNavigateToResults()
+        }
+    }
+
     Column(modifier = Modifier.fillMaxSize()) {
         CurrentChain(
             chain = uiState.value.chain,
@@ -51,7 +63,7 @@ fun GameScreen(viewModel: GameViewModel, onClickOpenRecipe: (String) -> Unit) {
 }
 
 @Composable
-private fun CurrentChain(
+fun CurrentChain(
     uiState: GameUiState,
     chain: Chain,
     onClickOpenRecipe: (String) -> Unit,
