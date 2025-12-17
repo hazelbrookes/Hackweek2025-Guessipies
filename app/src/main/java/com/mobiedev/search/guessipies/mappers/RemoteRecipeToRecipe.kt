@@ -13,5 +13,5 @@ fun RemoteRecipe.toRecipe(): Recipe = Recipe(
                 ingredient?.name?.replace("_", " ")?.capitalize()
             }.distinct()
         }.distinct()
-    }.distinct()
+    }.distinct().shuffled()
 )

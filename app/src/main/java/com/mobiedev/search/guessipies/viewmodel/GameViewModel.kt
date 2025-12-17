@@ -70,7 +70,7 @@ class GameViewModel(
                 _uiState.update {
                     uiState.value.copy(
                         currentRecipe = data.currentRecipe.toRecipe(),
-                        possibleAnswers = data.recipes.map { it.toRecipe() },
+                        possibleAnswers = data.recipes.map { it.toRecipe() }.shuffled(),
                         isLoading = false
                     )
                 }
@@ -85,7 +85,7 @@ class GameViewModel(
         }
         _uiState.update {
             uiState.value.copy(
-                currentRecipe = recipeGuessed, // TODO: remove
+                currentRecipe = recipeGuessed,
                 chain = uiState.value.chain.copy(
                     links = newLinks,
                     score = newLinks.size
