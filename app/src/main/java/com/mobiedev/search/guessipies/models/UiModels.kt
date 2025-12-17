@@ -6,7 +6,8 @@ import kotlinx.serialization.Serializable
 data class Recipe (
     val id: String,
     val title: String,
-    val ingredients: List<String>
+    val ingredients: List<String>,
+    val imageUrl: String? = null
 ) {
     fun linksToOtherRecipe(otherRecipe: Recipe): Link? {
         if (this == otherRecipe) return null

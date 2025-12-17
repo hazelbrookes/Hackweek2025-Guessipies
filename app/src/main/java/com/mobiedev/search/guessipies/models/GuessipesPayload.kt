@@ -18,7 +18,18 @@ data class GuessipiesData(
 data class RemoteRecipe(
     val id: String,
     val title: String,
-    val instructions: Instructions
+    val instructions: Instructions,
+    val media: Media? = null
+)
+
+@Serializable
+data class Media(
+    val image: Image? = null
+)
+
+@Serializable
+data class Image(
+    @SerialName("template") val url: String?
 )
 
 @Serializable

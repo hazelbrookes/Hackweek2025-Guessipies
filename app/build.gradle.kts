@@ -55,6 +55,8 @@ dependencies {
     implementation(libs.okhttp.client)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.serialization.converter)
+    implementation(libs.coil.kt)
+    implementation(libs.coil.okhttp)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
