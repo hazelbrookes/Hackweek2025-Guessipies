@@ -63,7 +63,7 @@ object Scores
 @Serializable
 object Game
 
-class RetryOn500Interceptor(private val maxRetries: Int = 5) : Interceptor {
+class RetryOn500Interceptor(private val maxRetries: Int = 10) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         var response = chain.proceed(chain.request())
         var tryCount = 0
