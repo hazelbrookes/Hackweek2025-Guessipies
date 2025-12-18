@@ -45,6 +45,8 @@ import kotlinx.serialization.Serializable
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Serializable
 object Home
@@ -150,9 +152,9 @@ fun GuessipiesAppNavigation(
             GameScreen(
                 viewModel = gameViewModel,
                 onClickOpenRecipe = { recipeId ->
-                    openRecipeLink(
+                    openLink(
                         context = context,
-                        recipeId = recipeId
+                        url = getRecipeUrl(recipeId)
                     )
                 },
                 onNavigateToResults = {
@@ -165,16 +167,25 @@ fun GuessipiesAppNavigation(
         }
         composable<Scores> {
             ScoresScreen(
-                onNavigateToHome= { navController.navigate(route = Home) }
+                onClickOpenScores = {
+                    val date = LocalDate.now()
+                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                    val formattedDate = date.format(formatter)
+                    openLink(
+                        context = context,
+                        url = "https://hack-daily-games.belfrage-preview.test.api.bbc.co.uk/" +
+                                "pres-test/leaderboard/guessipies/${formattedDate}"
+                    )
+                }
             )
         }
         composable<Results> {
             ResultsScreen(
                 gameViewModel,
                 onClickOpenRecipe = { recipeId ->
-                    openRecipeLink(
+                    openLink(
                         context = context,
-                        recipeId = recipeId
+                        url = getRecipeUrl(recipeId)
                     )
                 },
                 onNavigateToGame = {
@@ -185,8 +196,9 @@ fun GuessipiesAppNavigation(
     }
 }
 
-private fun openRecipeLink(context: Context, recipeId: String) {
-    val url = "https://www.bbc.co.uk/food/recipes/$recipeId"
+private fun getRecipeUrl(recipeId: String): String = "https://www.bbc.co.uk/food/recipes/$recipeId"
+
+private fun openLink(context: Context, url: String) {
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
     context.startActivity(intent)
 }

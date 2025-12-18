@@ -42,9 +42,13 @@ import coil3.request.crossfade
 import com.mobiedev.search.guessipies.viewmodel.GameUiState
 
 @Composable
-fun CurrentRecipeCard(uiState: GameUiState, onClickOpenRecipe: (String) -> Unit) {
+fun CurrentRecipeCard(
+    uiState: GameUiState,
+    onClickOpenRecipe: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .clearAndSetSemantics{
                 contentDescription = "Current Recipe: " + uiState.currentRecipe.title + "." + "Ingredients: " + uiState.currentRecipe.ingredients.joinToString(",")
             }
@@ -63,7 +67,8 @@ fun CurrentRecipeCard(uiState: GameUiState, onClickOpenRecipe: (String) -> Unit)
         RecipeImage(uiState.currentRecipe.imageUrl ?: "")
         Text(
             text = uiState.currentRecipe.title,
-            style = MaterialTheme.typography.titleLarge,
+//            style = MaterialTheme.typography.titleLarge,
+            fontSize = 18.sp,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
