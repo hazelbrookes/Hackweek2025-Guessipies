@@ -45,25 +45,17 @@ fun GameScreen(
         .fillMaxSize()
         .background(MaterialTheme.colorScheme.background)
     ) {
-//        CurrentChain(
-//            chain = uiState.value.chain,
-//            uiState = uiState.value,
-//            onClickOpenRecipe = onClickOpenRecipe,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .weight(.6f)
-//        )
-        CurrentRecipeCard(uiState = uiState.value, onClickOpenRecipe)
+        CurrentRecipeCard(
+            uiState = uiState.value,
+            onClickOpenRecipe = onClickOpenRecipe,
+            modifier = Modifier.weight(1f)
+        )
         PossibleAnswersGrid(
             uiState = uiState.value,
             onClickGuess = { viewModel.onClickGuess(it) },
-            modifier = Modifier
-                .weight(1f)
+            modifier = Modifier.weight(.7f)
         )
-        ScoreCard(
-            uiState.value,
-            modifier = Modifier
-        )
+        ScoreCard(uiState.value)
     }
 }
 
