@@ -75,7 +75,7 @@ fun CurrentChain(
             item {
                 Icon(
                     imageVector = Icons.Default.Clear,
-                    contentDescription = "",
+                    contentDescription = "Link Broken Icon",
                     modifier = Modifier
                         .fillMaxWidth()
                         .size(24.dp),

@@ -42,7 +42,7 @@ fun ScoreCard(
     OutlinedCard(
         modifier = modifier
             .clearAndSetSemantics{
-                contentDescription = "Game score: " + uiState.chain.score.toString()
+                contentDescription = "Game score: " + uiState.chain.score.toString() + ", Last linked ingredient: " + previousLinkedIngredient(uiState)
             }
             .padding(horizontal = 20.dp, vertical = 10.dp)
             .wrapContentSize()

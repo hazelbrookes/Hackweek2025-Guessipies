@@ -49,11 +49,12 @@ fun CurrentRecipeCard(
 ) {
     Card(
         modifier = modifier
+            .clickable(
+                onClickLabel = "open recipe in browser",
+                onClick = { onClickOpenRecipe(uiState.currentRecipe.id) }
+            )
             .clearAndSetSemantics{
                 contentDescription = "Current Recipe: " + uiState.currentRecipe.title + "." + "Ingredients: " + uiState.currentRecipe.ingredients.joinToString(",")
-            }
-            .clickable {
-                onClickOpenRecipe(uiState.currentRecipe.id)
             }
             .fillMaxWidth()
             .padding(20.dp),

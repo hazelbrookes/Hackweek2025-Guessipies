@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mobiedev.search.guessipies.ui.components.LinkCard
@@ -41,6 +42,14 @@ fun ResultsScreen(
             .fillMaxSize()
     ) {
         //Show full game chain
+        Text(
+            text = "Game Over",
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .align(alignment = Alignment.CenterHorizontally)
+                .padding(top = 10.dp)
+        )
         CurrentChain(
             chain = uiState.value.chain,
             uiState = uiState.value,
