@@ -113,7 +113,7 @@ class GameViewModel(
                 ScorePoster.submitScore(
                     score = uiState.value.chain.score,
                     username = "KevinBacon",
-                    game = "Guessipies"
+                    game = "guessipies"
                 )
             } catch (e: Exception) {
                 Log.d("HELP", "endGame: ${e.message}" )
