@@ -15,7 +15,6 @@ import okhttp3.Response
 class RecipesFetcher(
     private val okHttpClient: OkHttpClient
 ) {
-
     suspend fun getRecipes(recipe: Recipe?): GuessipiesData? = withContext(Dispatchers.IO) {
         val url = if(recipe != null){
             "https://bruce.belfrage.test.api.bbc.co.uk/fd/preview/spike-app-food-data?current=${recipe.id}"
