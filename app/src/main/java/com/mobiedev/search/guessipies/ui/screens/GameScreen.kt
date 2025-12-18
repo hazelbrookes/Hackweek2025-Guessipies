@@ -15,6 +15,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -39,6 +41,10 @@ fun GameScreen(
     onNavigateToResults: () -> Unit
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val usernameDataStore = remember(context) { UsernameDataStore(context) }
+    val username by usernameDataStore.usernameFlow().collectAsState(null)
+
 
     LaunchedEffect(uiState.value.gameLive){
         if(!uiState.value.gameLive){
@@ -57,7 +63,7 @@ fun GameScreen(
         )
         PossibleAnswersGrid(
             uiState = uiState.value,
-            onClickGuess = { viewModel.onClickGuess(it) },
+            onClickGuess = { viewModel.onClickGuess(it, username) },
             modifier = Modifier.weight(.7f)
         )
         ScoreCard(uiState.value)

@@ -17,9 +17,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -28,6 +33,7 @@ import com.mobiedev.search.guessipies.ui.components.LinkCard
 import com.mobiedev.search.guessipies.ui.components.ScoreCard
 import com.mobiedev.search.guessipies.viewmodel.GameViewModel
 import com.mobiedev.search.guessipies.network.ScorePoster
+import com.mobiedev.search.guessipies.network.UsernameDataStore
 
 @Composable
 fun ResultsScreen(
@@ -36,7 +42,6 @@ fun ResultsScreen(
     onNavigateToGame: () -> Unit
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-
     Column(
         modifier = Modifier
             .fillMaxSize()
