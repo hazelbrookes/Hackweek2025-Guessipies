@@ -44,6 +44,8 @@ import kotlinx.serialization.Serializable
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Serializable
 object Home
@@ -164,10 +166,13 @@ fun GuessipiesAppNavigation(
         composable<Scores> {
             ScoresScreen(
                 onClickOpenScores = {
+                    val date = LocalDate.now()
+                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                    val formattedDate = date.format(formatter)
                     openLink(
                         context = context,
                         url = "https://hack-daily-games.belfrage-preview.test.api.bbc.co.uk/" +
-                                "pres-test/leaderboard/guessipies/2025-12-17"
+                                "pres-test/leaderboard/guessipies/${formattedDate}"
                     )
                 }
             )
