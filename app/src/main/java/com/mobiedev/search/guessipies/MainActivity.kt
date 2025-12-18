@@ -3,10 +3,12 @@ package com.mobiedev.search.guessipies
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -24,14 +26,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
-import com.mobiedev.search.guessipies.models.Chain
 import com.mobiedev.search.guessipies.network.RecipesFetcher
 import com.mobiedev.search.guessipies.network.ScorePoster
 import com.mobiedev.search.guessipies.ui.screens.GameScreen
@@ -47,6 +49,8 @@ import okhttp3.OkHttpClient
 import okhttp3.Response
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.stringPreferencesKey
 
 @Serializable
 object Home
@@ -63,6 +67,9 @@ object Scores
 @Serializable
 object Game
 
+val USERNAME_KEY = stringPreferencesKey("username")
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "usernameStore")
+
 class RetryOn500Interceptor(private val maxRetries: Int = 10) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         var response = chain.proceed(chain.request())
@@ -76,6 +83,7 @@ class RetryOn500Interceptor(private val maxRetries: Int = 10) : Interceptor {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,6 +136,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun GuessipiesAppNavigation(
     modifier: Modifier = Modifier,

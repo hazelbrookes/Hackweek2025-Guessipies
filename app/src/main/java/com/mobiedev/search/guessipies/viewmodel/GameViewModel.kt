@@ -1,6 +1,9 @@
 package com.mobiedev.search.guessipies.viewmodel
 
 import android.util.Log
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobiedev.search.guessipies.mappers.toRecipe
@@ -49,7 +52,7 @@ class GameViewModel(
     )
     val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
 
-    fun onClickGuess(recipeGuessed: Recipe) {
+    fun onClickGuess(recipeGuessed: Recipe, username: String?) {
         uiState.value.currentRecipe.linksToOtherRecipe(otherRecipe = recipeGuessed)?.let { link ->
             updateLinks(
                 recipeGuessed = recipeGuessed,
@@ -62,7 +65,7 @@ class GameViewModel(
             }
             getRecipes(recipeGuessed)
         } ?: run {
-            endGame()
+            endGame(username)
         }
     }
 
@@ -107,12 +110,12 @@ class GameViewModel(
         }
     }
 
-    private fun endGame() {
+    private fun endGame(username: String?) {
         viewModelScope.launch {
             try {
                 ScorePoster.submitScore(
                     score = uiState.value.chain.score,
-                    username = "KevinBacon",
+                    username = username ?: "KevinBacon",
                     game = "guessipies"
                 )
             } catch (e: Exception) {
