@@ -148,9 +148,9 @@ fun GuessipiesAppNavigation(
             GameScreen(
                 viewModel = gameViewModel,
                 onClickOpenRecipe = { recipeId ->
-                    openRecipeLink(
+                    openLink(
                         context = context,
-                        recipeId = recipeId
+                        url = getRecipeUrl(recipeId)
                     )
                 },
                 onNavigateToResults = {
@@ -163,16 +163,22 @@ fun GuessipiesAppNavigation(
         }
         composable<Scores> {
             ScoresScreen(
-                onNavigateToHome= { navController.navigate(route = Home) }
+                onClickOpenScores = {
+                    openLink(
+                        context = context,
+                        url = "https://hack-daily-games.belfrage-preview.test.api.bbc.co.uk/" +
+                                "pres-test/leaderboard/guessipies/2025-12-17"
+                    )
+                }
             )
         }
         composable<Results> {
             ResultsScreen(
                 gameViewModel,
                 onClickOpenRecipe = { recipeId ->
-                    openRecipeLink(
+                    openLink(
                         context = context,
-                        recipeId = recipeId
+                        url = getRecipeUrl(recipeId)
                     )
                 },
                 onNavigateToGame = {
@@ -183,8 +189,9 @@ fun GuessipiesAppNavigation(
     }
 }
 
-private fun openRecipeLink(context: Context, recipeId: String) {
-    val url = "https://www.bbc.co.uk/food/recipes/$recipeId"
+private fun getRecipeUrl(recipeId: String): String = "https://www.bbc.co.uk/food/recipes/$recipeId"
+
+private fun openLink(context: Context, url: String) {
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
     context.startActivity(intent)
 }
