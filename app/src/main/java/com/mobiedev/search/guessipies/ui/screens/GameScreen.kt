@@ -15,12 +15,16 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mobiedev.search.guessipies.models.Chain
+import com.mobiedev.search.guessipies.network.UsernameDataStore
 import com.mobiedev.search.guessipies.ui.components.CurrentRecipeCard
 import com.mobiedev.search.guessipies.ui.components.LinkCard
 import com.mobiedev.search.guessipies.ui.components.PossibleAnswersGrid

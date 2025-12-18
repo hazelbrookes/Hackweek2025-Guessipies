@@ -1,6 +1,9 @@
 package com.mobiedev.search.guessipies.viewmodel
 
 import android.util.Log
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobiedev.search.guessipies.mappers.toRecipe

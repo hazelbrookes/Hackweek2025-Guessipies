@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.coil.kt)
     implementation(libs.coil.okhttp)
     implementation(libs.androidx.compose.foundation)
+    implementation(libs.datastore.prefs)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
