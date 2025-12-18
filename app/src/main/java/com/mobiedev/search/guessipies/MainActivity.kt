@@ -33,6 +33,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.mobiedev.search.guessipies.models.Chain
 import com.mobiedev.search.guessipies.network.RecipesFetcher
+import com.mobiedev.search.guessipies.network.ScorePoster
 import com.mobiedev.search.guessipies.ui.screens.GameScreen
 import com.mobiedev.search.guessipies.ui.screens.HomeScreen
 import com.mobiedev.search.guessipies.ui.screens.HowToScreen
@@ -82,7 +83,8 @@ class MainActivity : ComponentActivity() {
 
         val okHttpClient = OkHttpClient.Builder().addInterceptor(RetryOn500Interceptor()).build()
         val recipesFetcher = RecipesFetcher(okHttpClient)
-        val gameViewModel = GameViewModel(recipesFetcher)
+        val scoresPoster = ScorePoster(okHttpClient)
+        val gameViewModel = GameViewModel(recipesFetcher, scoresPoster)
 
         setContent {
             val navController = rememberNavController()

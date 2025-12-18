@@ -1,5 +1,6 @@
 package com.mobiedev.search.guessipies.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobiedev.search.guessipies.mappers.toRecipe
@@ -7,6 +8,7 @@ import com.mobiedev.search.guessipies.models.Chain
 import com.mobiedev.search.guessipies.models.Link
 import com.mobiedev.search.guessipies.models.Recipe
 import com.mobiedev.search.guessipies.network.RecipesFetcher
+import com.mobiedev.search.guessipies.network.ScorePoster
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,7 +29,8 @@ data class GameUiState(
 )
 
 class GameViewModel(
-    private val recipesFetcher: RecipesFetcher
+    private val recipesFetcher: RecipesFetcher,
+    private val ScorePoster: ScorePoster
 ) : ViewModel() {
 
     init {
@@ -105,6 +108,17 @@ class GameViewModel(
     }
 
     private fun endGame() {
+        viewModelScope.launch {
+            try {
+                ScorePoster.submitScore(
+                    score = uiState.value.chain.score,
+                    username = "KevinBacon",
+                    game = "guessipies"
+                )
+            } catch (e: Exception) {
+                Log.d("HELP", "endGame: ${e.message}" )
+            }
+        }
         _uiState.update {
             uiState.value.copy(gameLive = false)
         }
