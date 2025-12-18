@@ -10,11 +10,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.asComposeColorFilter
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.font.FontWeight
@@ -48,12 +52,13 @@ fun LinkCard(link: Link, onClickOpenRecipe: (String) -> Unit) {
                     .padding(all = 8.dp)
                     .weight(1f)
             )
-            Image(
+            Icon(
                 imageVector = Icons.AutoMirrored.Filled.OpenInNew,
                 contentDescription = null,
                 modifier = Modifier
                     .padding(all = 8.dp)
-                    .size(24.dp)
+                    .size(24.dp),
+                tint = MaterialTheme.colorScheme.onSurface
             )
         }
         HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp))
@@ -87,12 +92,13 @@ fun LinkCard(link: Link, onClickOpenRecipe: (String) -> Unit) {
                     .weight(1f)
                     .fillMaxWidth()
             )
-            Image(
+            Icon(
                 imageVector = Icons.AutoMirrored.Filled.OpenInNew,
                 contentDescription = null,
                 modifier = Modifier
                     .padding(all = 8.dp)
-                    .size(24.dp)
+                    .size(24.dp),
+                tint = MaterialTheme.colorScheme.onSurface
             )
         }
     }

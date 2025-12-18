@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Link
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -72,12 +73,13 @@ fun CurrentChain(
     ) {
         if (!uiState.gameLive) {
             item {
-                Image(
+                Icon(
                     imageVector = Icons.Default.Clear,
                     contentDescription = "",
                     modifier = Modifier
                         .fillMaxWidth()
-                        .size(24.dp)
+                        .size(24.dp),
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
             }
         }
@@ -87,14 +89,15 @@ fun CurrentChain(
                 onClickOpenRecipe = onClickOpenRecipe
             )
             if (index != chain.links.size - 1) {
-                Image(
+                Icon(
                     imageVector = Icons.Default.Link,
                     contentDescription = "",
                     modifier = Modifier
                         .rotate(90f)
                         .clearAndSetSemantics { }
                         .fillMaxWidth()
-                        .size(24.dp)
+                        .size(24.dp),
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
             }
         }
