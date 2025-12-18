@@ -68,7 +68,8 @@ fun CurrentRecipeCard(
         RecipeImage(uiState.currentRecipe.imageUrl ?: "")
         Text(
             text = uiState.currentRecipe.title,
-            style = MaterialTheme.typography.titleLarge,
+//            style = MaterialTheme.typography.titleLarge,
+            fontSize = 18.sp,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
             modifier = Modifier

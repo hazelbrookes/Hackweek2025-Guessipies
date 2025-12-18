@@ -98,7 +98,7 @@ fun PossibleAnswersGrid(
                                 modifier = Modifier,
                                 textAlign = TextAlign.Center,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                fontSize = 20.sp
+                                fontSize = 16.sp
                             )
                         }
                     }
